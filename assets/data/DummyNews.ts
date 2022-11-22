@@ -11,7 +11,7 @@ export const dummyNews = [
     url: 'https://www.theverge.com/2022/11/11/23453560/ftxbankruptcycoinbasebinancecryptoproofofreserves',
     urlToImage:
       'https://cdn.voxcdn.com/thumbor/wPO2usOSxctI84haZv11M8ErP_0=/0x0:2040x1360/1200x628/filters:focal(1020x680:1021x681)/cdn.voxcdn.com/uploads/chorus_asset/file/23587767/acastro_220524_STK428_0003.jpg',
-    publishedAt: '20221111T21:31:19Z',
+    publishedAt: '2022-11-11T21:31:19Z',
     content:
       'You say you have my money? Prove it. | Illustration by Alex Castro / The Verge\r\n\n \n\n As FTX, formerly the world’s thirdlargest cryptocurrency exchange by volume, files for bankruptcy and halts withd… [+5867 chars]',
   },

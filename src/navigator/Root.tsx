@@ -6,6 +6,7 @@ import {Colors} from '../Colors';
 import {TabNavigator, TabNavigatorParamList} from './Tab';
 import {Article} from '../screens/article/Article';
 import {Notification} from '../screens/notification/Notifications';
+import {LatestArticleProvider} from '../context/LatestArticles';
 
 export type RootStackParamList = {
   Article: {
@@ -19,17 +20,19 @@ const RootStack = createStackNavigator<RootStackParamList>();
 
 export const RootNavigator = () => {
   return (
-    <RootStack.Navigator
-      screenOptions={{
-        presentation: 'card',
-        headerShown: false,
-        cardStyle: {backgroundColor: Colors.White},
-        gestureEnabled: false,
-      }}
-      initialRouteName={'Tab'}>
-      <RootStack.Screen name="Tab" component={TabNavigator} />
-      <RootStack.Screen name="Article" component={Article} />
-      <RootStack.Screen name="Notification" component={Notification} />
-    </RootStack.Navigator>
+    <LatestArticleProvider>
+      <RootStack.Navigator
+        screenOptions={{
+          presentation: 'card',
+          headerShown: false,
+          cardStyle: {backgroundColor: Colors.White},
+          gestureEnabled: false,
+        }}
+        initialRouteName={'Tab'}>
+        <RootStack.Screen name="Tab" component={TabNavigator} />
+        <RootStack.Screen name="Article" component={Article} />
+        <RootStack.Screen name="Notification" component={Notification} />
+      </RootStack.Navigator>
+    </LatestArticleProvider>
   );
 };

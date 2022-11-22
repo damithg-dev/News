@@ -7,6 +7,11 @@ import {Colors} from '../../Colors';
 import {TabNavigatorParamList} from '../../navigator/Tab';
 import {RootStackParamList} from '../../navigator/Root';
 import {SearchInput} from '../../components/SearchInput';
+import {LatestNewsCarousel} from './components/LatestNewsCarousel';
+import {FlashList} from '@shopify/flash-list';
+import {useLatestArticle} from '../../context/LatestArticles';
+import {ArticleCard} from '../../components/ArticleCard';
+import {CategoryCarousel} from '../../components/CategoryList';
 
 type NavigationProps = CompositeNavigationProp<
   StackNavigationProp<TabNavigatorParamList, 'Home'>,
@@ -15,6 +20,7 @@ type NavigationProps = CompositeNavigationProp<
 
 export const Home = () => {
   const {navigate} = useNavigation<NavigationProps>();
+  const {articles} = useLatestArticle();
 
   return (
     <View style={styles.root}>
@@ -31,7 +37,17 @@ export const Home = () => {
         />
       </View>
       <ScrollView>
-        <></>
+        <>
+          <LatestNewsCarousel onPressSeeMore={() => {}} />
+          <CategoryCarousel />
+          <FlashList
+            scrollEnabled={false}
+            data={articles}
+            renderItem={({item}) => {
+              return <ArticleCard onPress={() => {}} article={item} />;
+            }}
+          />
+        </>
       </ScrollView>
     </View>
   );

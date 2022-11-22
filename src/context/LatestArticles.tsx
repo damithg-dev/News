@@ -6,6 +6,7 @@ import React, {
   useMemo,
   useState,
 } from 'react';
+import {LatestArticleService} from '../service/Latest';
 
 type State = {
   loading: boolean;
@@ -28,9 +29,11 @@ export const LatestArticleProvider = ({children}: Props) => {
   const [articles, setArticles] = useState<Article[]>([]);
 
   useEffect(() => {
-    // return () => {
-    //   second;
-    // };
+    (async () => {
+      const _article = await LatestArticleService.getLatestNews();
+      setArticles(_article);
+      setLoading(false);
+    })();
   }, []);
 
   const values = useMemo(() => ({articles, loading}), [articles, loading]);

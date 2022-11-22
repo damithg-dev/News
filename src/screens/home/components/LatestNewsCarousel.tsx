@@ -9,6 +9,7 @@ import {
 import {Colors} from '../../../Colors';
 import {Pressable} from '../../../components/Pressable';
 import {Text} from '../../../components/Text';
+import {useLatestArticle} from '../../../context/LatestArticles';
 import {ArrowRight} from '../../../icons/ArrowRight';
 import {LatestNewsCard} from './LatestNewsCard';
 
@@ -17,12 +18,13 @@ const itemSeparatorWidth = 20;
 const itemWidth = width * 0.8;
 
 interface LatestNewsCarouselProps {
-  onPressSeeMore: () => {};
+  onPressSeeMore: () => void;
 }
 
 export const LatestNewsCarousel = ({
   onPressSeeMore,
 }: LatestNewsCarouselProps) => {
+  const {loading, articles} = useLatestArticle();
   const scrollX = useRef(new Animated.Value(0)).current;
 
   const renderItem: ListRenderItem<Article> = ({item, index}) => (
@@ -39,17 +41,17 @@ export const LatestNewsCarousel = ({
         <Text fontFamily="NWB" size={18} style={styles.buttonLeftText}>
           Latest News
         </Text>
-        <Pressable onPress={onPressSeeMore} style={styles.buttonRight}>
-          <>
-            <Text fontFamily="NSB" size={12} color={Colors.Secondary}>
-              See All
-            </Text>
+        <Pressable onPress={onPressSeeMore} containerStyle={styles.buttonRight}>
+          <Text fontFamily="NSB" size={12} color={Colors.Secondary}>
+            See All
+          </Text>
+          <View style={styles.iconContainer}>
             <ArrowRight size={12} color={Colors.Secondary} />
-          </>
+          </View>
         </Pressable>
       </View>
       <Animated.FlatList
-        data={[]}
+        data={articles.slice(0, 10)}
         renderItem={renderItem}
         showsHorizontalScrollIndicator={false}
         horizontal
@@ -73,9 +75,8 @@ export const LatestNewsCarousel = ({
 
 const styles = StyleSheet.create({
   listContainer: {
-    paddingHorizontal: itemSeparatorWidth * 2,
-    marginBottom: 20,
-    marginTop: 40,
+    paddingHorizontal: itemSeparatorWidth,
+    marginVertical: 16,
   },
   list: {
     margin: 20,
@@ -93,11 +94,19 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignContent: 'center',
     alignItems: 'center',
+    marginTop: 30,
   },
   buttonRight: {
-    paddingRight: 24,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignContent: 'center',
+    alignItems: 'center',
+    paddingRight: 20,
   },
   buttonLeftText: {
-    marginLeft: 24,
+    marginLeft: 20,
+  },
+  iconContainer: {
+    marginLeft: 8,
   },
 });

@@ -4,7 +4,6 @@ import {Colors} from '../Colors';
 import {getFont} from '../Fonts';
 
 interface TextProps extends RNTextProps {
-  children: any;
   fontFamily?: 'NWSB' | 'NWB' | 'NL' | 'NR' | 'NSB' | 'NB' | 'NEB' | 'NBL';
   size?: number;
   color?: string;
@@ -13,7 +12,6 @@ interface TextProps extends RNTextProps {
 
 export const Text: FC<PropsWithChildren<TextProps>> = ({
   children,
-  formatted = false,
   fontFamily = 'NB',
   size = 14,
   color = Colors.Black,
@@ -24,30 +22,19 @@ export const Text: FC<PropsWithChildren<TextProps>> = ({
     return null;
   }
 
-  const renderChildren = () => {
-    if (!formatted) {
-      return children;
-    }
-    if (typeof children === 'number') {
-      return `Rs. ${children.toLocaleString('en')}`;
-    } else {
-      return children;
-    }
-  };
-
   return (
     <RNText
       style={[
         {
           fontFamily: getFont(fontFamily),
           fontSize: size,
-          lineHeight: size * 0.1,
+          lineHeight: size * 1.1,
           color: color,
         },
         style,
       ]}
       {...rest}>
-      {renderChildren()}
+      {children}
     </RNText>
   );
 };
