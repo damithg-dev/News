@@ -11,6 +11,7 @@ import {BookmarkIcon} from '../../icons/Bookmark';
 import {ArrowLeftIcon} from '../../icons/ArrowLeft';
 import {OverlaySpinner} from '../../components/OverlaySpinner';
 import {useBMArticle} from '../../realm/Service';
+import {BookmarkFiledIcon} from '../../icons/BookmarkFiled';
 
 type NavigationProps = StackNavigationProp<RootStackParamList, 'Article'>;
 type RouteProps = RouteProp<RootStackParamList, 'Article'>;
@@ -21,10 +22,16 @@ export const Article = () => {
     params: {article},
   } = useRoute<RouteProps>();
   const [isLoading, setIsLoading] = useState(true);
-  const {addBookmark} = useBMArticle();
+  const {addBookmark, removeBookmark, bookmarkArticle} = useBMArticle();
+
+  const isAlreadyBM = bookmarkArticle.some(v => v.title === article.title);
 
   const addToBookmark = () => {
-    addBookmark(article);
+    if (isAlreadyBM) {
+      removeBookmark(article);
+    } else {
+      addBookmark(article);
+    }
   };
 
   return (
@@ -53,7 +60,11 @@ export const Article = () => {
         onPress={addToBookmark}
         style={styles.bottomButton}
         containerStyle={styles.bottomButtonContainer}>
-        <BookmarkIcon size={25} color={Colors.Black} />
+        {isAlreadyBM ? (
+          <BookmarkFiledIcon size={25} color={Colors.Black} />
+        ) : (
+          <BookmarkIcon size={25} color={Colors.Black} />
+        )}
       </Pressable>
     </View>
   );

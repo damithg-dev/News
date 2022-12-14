@@ -10,6 +10,7 @@ interface Response {
 export const toArticle = (data: ArticleRow) => {
   const _article = {
     ...data,
+    title: data.title,
     articleUrl: data.url,
     imageUrl: data.urlToImage,
     publishDate: data.publishedAt,

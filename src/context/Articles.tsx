@@ -29,14 +29,6 @@ export const ArticlesProvider = ({children}: Props) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [articles, setArticles] = useState<Article[]>([]);
 
-  // useEffect(() => {
-  //   (async () => {
-  //     const _article = await ArticleService.getLatestArticles();
-  //     setArticles(_article ?? []);
-  //     setLoading(false);
-  //   })();
-  // }, []);
-
   const getArticlesByCategory = useCallback(
     async (category: ArticleCategoryType) => {
       const _article = await ArticleService.getCategorizedArticles(category);

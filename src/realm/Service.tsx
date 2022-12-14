@@ -31,14 +31,15 @@ export const BookmarkArticleProvider = ({...rest}) => {
   const realm = useRealm();
 
   const [articles, setArticles] = useState<Article[]>([]);
+  const [rowArticles, setRowArticles] = useState<ArticleRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
   const [reload, setReload] = useState(true);
 
   useEffect(() => {
-    const _articles = realm.objects<ArticleRow>('article');
-
-    setArticles(_articles.map(a => toArticle(a)));
+    const _articles = realm.objects('article');
+    setRowArticles(_articles as unknown as ArticleRow[]);
+    setArticles(_articles.map(a => toArticle(a as unknown as ArticleRow)));
   }, [realm, reload]);
 
   const addBookmark = useCallback(
@@ -59,13 +60,16 @@ export const BookmarkArticleProvider = ({...rest}) => {
   const removeBookmark = useCallback(
     (_article: Article) => {
       try {
-        realm.write(() => realm.delete(_article));
-        setReload(!reload);
+        const temp = rowArticles.find(ra => ra.title === _article.title);
+        if (temp) {
+          realm.write(() => realm.delete(temp));
+          setReload(!reload);
+        }
       } catch (e) {
         console.log(e);
       }
     },
-    [realm, reload],
+    [realm, reload, rowArticles],
   );
 
   const value = useMemo(
