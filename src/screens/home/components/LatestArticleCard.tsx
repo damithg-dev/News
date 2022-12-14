@@ -14,12 +14,15 @@ import {Styles} from '../../../Styles';
 const {width} = Dimensions.get('window');
 const itemWidth = width * 0.8;
 
-interface LatestNewsCardProps {
+interface LatestArticleCardProps {
   article: Article;
   onPress: () => void;
 }
 
-export const LatestNewsCard = ({article, onPress}: LatestNewsCardProps) => (
+export const LatestArticleCard = ({
+  article,
+  onPress,
+}: LatestArticleCardProps) => (
   <TouchableWithoutFeedback onPress={onPress}>
     <View style={[Styles.card, styles.container]}>
       <ImageLoader
@@ -71,7 +74,7 @@ const styles = StyleSheet.create({
   blurContainer: {
     flex: 1,
     backgroundColor: Colors.Black,
-    opacity: 0.2,
+    opacity: 0.6,
     borderRadius: 20,
   },
   detailContainer: {

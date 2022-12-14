@@ -1,6 +1,7 @@
 import React from 'react';
 import {StyleSheet, TouchableWithoutFeedback, View} from 'react-native';
 import {Colors} from '../../Colors';
+import {capitalize} from '../../helper/string';
 import {Text} from '../Text';
 
 interface CardProps {
@@ -16,7 +17,7 @@ export const Card = ({title, isSelected, onPress}: CardProps) => (
         color={isSelected ? Colors.White : Colors.Black}
         size={12}
         fontFamily={'NSB'}>
-        {title}
+        {capitalize(title)}
       </Text>
     </View>
   </TouchableWithoutFeedback>

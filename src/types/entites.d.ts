@@ -4,12 +4,21 @@ interface Source {
 }
 
 interface Article {
-  source: Source;
   author: string;
   title: string;
   description: string;
   articleUrl: string;
   imageUrl: string;
   publishDate: Date;
+  content: string;
+}
+
+interface ArticleRow {
+  author: string;
+  title: string;
+  description: string;
+  url: string;
+  urlToImage: string;
+  publishedAt: Date;
   content: string;
 }

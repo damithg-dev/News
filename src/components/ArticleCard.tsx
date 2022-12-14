@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   blurContainer: {
     flex: 1,
     backgroundColor: Colors.Black,
-    opacity: 0.2,
+    opacity: 0.6,
     borderRadius: 20,
   },
   detailContainer: {

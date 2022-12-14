@@ -8,27 +8,36 @@ import {
 } from 'react-native';
 import {Colors} from '../../../Colors';
 import {Pressable} from '../../../components/Pressable';
+import {Spinner} from '../../../components/Spinner';
 import {Text} from '../../../components/Text';
-import {useLatestArticle} from '../../../context/LatestArticles';
-import {ArrowRight} from '../../../icons/ArrowRight';
-import {LatestNewsCard} from './LatestNewsCard';
+import {useLatestArticles} from '../../../context/Articles';
+import {ArrowRightIcon} from '../../../icons/ArrowRight';
+import {SpinnerStyle} from '../../../types/appEnums';
+
+import {LatestArticleCard} from './LatestArticleCard';
 
 const {width} = Dimensions.get('window');
 const itemSeparatorWidth = 20;
 const itemWidth = width * 0.8;
 
-interface LatestNewsCarouselProps {
+interface LatestArticleCarouselProps {
   onPressSeeMore: () => void;
+  onPressArticle: (article: Article) => void;
 }
 
-export const LatestNewsCarousel = ({
+export const LatestArticleCarousel = ({
   onPressSeeMore,
-}: LatestNewsCarouselProps) => {
-  const {loading, articles} = useLatestArticle();
+  onPressArticle,
+}: LatestArticleCarouselProps) => {
+  const {loading, articles} = useLatestArticles();
   const scrollX = useRef(new Animated.Value(0)).current;
 
   const renderItem: ListRenderItem<Article> = ({item, index}) => (
-    <LatestNewsCard key={index} article={item} onPress={() => {}} />
+    <LatestArticleCard
+      key={index}
+      article={item}
+      onPress={() => onPressArticle(item)}
+    />
   );
 
   const renderItemSeparator = () => {
@@ -46,29 +55,35 @@ export const LatestNewsCarousel = ({
             See All
           </Text>
           <View style={styles.iconContainer}>
-            <ArrowRight size={12} color={Colors.Secondary} />
+            <ArrowRightIcon size={12} color={Colors.Secondary} />
           </View>
         </Pressable>
       </View>
-      <Animated.FlatList
-        data={articles.slice(0, 10)}
-        renderItem={renderItem}
-        showsHorizontalScrollIndicator={false}
-        horizontal
-        onScroll={Animated.event(
-          [{nativeEvent: {contentOffset: {x: scrollX}}}],
-          {
-            useNativeDriver: true,
-          },
-        )}
-        bounces={false}
-        decelerationRate={'fast'}
-        scrollEventThrottle={16}
-        contentContainerStyle={styles.listContainer}
-        snapToInterval={itemWidth + itemSeparatorWidth}
-        ItemSeparatorComponent={renderItemSeparator}
-        disableIntervalMomentum
-      />
+      {loading ? (
+        <View style={styles.spinnerContainer}>
+          <Spinner renderStyle={SpinnerStyle.Fluid} />
+        </View>
+      ) : (
+        <Animated.FlatList
+          data={articles.slice(0, 10)}
+          renderItem={renderItem}
+          showsHorizontalScrollIndicator={false}
+          horizontal
+          onScroll={Animated.event(
+            [{nativeEvent: {contentOffset: {x: scrollX}}}],
+            {
+              useNativeDriver: true,
+            },
+          )}
+          bounces={false}
+          decelerationRate={'fast'}
+          scrollEventThrottle={16}
+          contentContainerStyle={styles.listContainer}
+          snapToInterval={itemWidth + itemSeparatorWidth}
+          ItemSeparatorComponent={renderItemSeparator}
+          disableIntervalMomentum
+        />
+      )}
     </>
   );
 };
@@ -80,6 +95,13 @@ const styles = StyleSheet.create({
   },
   list: {
     margin: 20,
+  },
+  spinnerContainer: {
+    width: itemWidth,
+    height: itemWidth / 2,
+    alignContent: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   itemSeparator: {
     width: itemSeparatorWidth,

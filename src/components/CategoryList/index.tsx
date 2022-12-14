@@ -1,10 +1,10 @@
-import React, {useRef, useState} from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, View, ListRenderItem, FlatList} from 'react-native';
-import {ArticleCategories} from '../../types/appEnums';
+import {ArticleCategoryType} from '../../types/appEnums';
 import {Card} from './Card';
 
 interface CategoryCarouselProps {
-  onPress: () => void;
+  onPress: (category: ArticleCategoryType) => void;
 }
 
 export const CategoryCarousel = ({onPress}: CategoryCarouselProps) => {
@@ -14,7 +14,10 @@ export const CategoryCarousel = ({onPress}: CategoryCarouselProps) => {
       key={index}
       title={item}
       isSelected={selectedIndex === index}
-      onPress={() => setSelectedIndex(index)}
+      onPress={() => {
+        onPress(item as unknown as ArticleCategoryType);
+        setSelectedIndex(index);
+      }}
     />
   );
 
@@ -23,13 +26,13 @@ export const CategoryCarousel = ({onPress}: CategoryCarouselProps) => {
   };
 
   const categories = [
-    ArticleCategories.Business,
-    ArticleCategories.Entertainment,
-    ArticleCategories.General,
-    ArticleCategories.Health,
-    ArticleCategories.Science,
-    ArticleCategories.sports,
-    ArticleCategories.Technology,
+    ArticleCategoryType.General,
+    ArticleCategoryType.Business,
+    ArticleCategoryType.Entertainment,
+    ArticleCategoryType.Health,
+    ArticleCategoryType.Science,
+    ArticleCategoryType.sports,
+    ArticleCategoryType.Technology,
   ];
 
   return (

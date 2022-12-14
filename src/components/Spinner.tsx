@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import LottieView from 'lottie-react-native';
 import {Colors} from '../Colors';
+import {SpinnerStyle} from '../types/appEnums';
 
 const SpinnerAnim = require('../../assets/lottie/SpinnerGray.json');
 
@@ -26,11 +27,7 @@ export const Spinner = ({
     case SpinnerStyle.Basic: {
       return (
         <View style={{...styles.container, ...containerViewStyle}}>
-          <ActivityIndicator
-            size={size}
-            color={Colors.Secondary.GreySoft}
-            {...rest}
-          />
+          <ActivityIndicator size={size} color={Colors.Secondary} {...rest} />
         </View>
       );
     }
@@ -46,7 +43,7 @@ export const Spinner = ({
             autoPlay
             loop
             style={styles.spinnerSize}
-            colorFilters={[{keypath: '预合成 1', color: Colors.Primary.Blue}]}
+            colorFilters={[{keypath: '预合成 1', color: Colors.Primary}]}
           />
         </View>
       );
@@ -54,11 +51,7 @@ export const Spinner = ({
     default: {
       return (
         <View style={{...styles.container, ...containerViewStyle}}>
-          <ActivityIndicator
-            size={size}
-            color={Colors.Secondary.GreySoft}
-            {...rest}
-          />
+          <ActivityIndicator size={size} color={Colors.Secondary} {...rest} />
         </View>
       );
     }

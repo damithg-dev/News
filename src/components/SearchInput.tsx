@@ -11,7 +11,7 @@ import {
 
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 import {Colors} from '../Colors';
-import {SearchIcon} from '../icons/Searc';
+import {SearchIcon} from '../icons/Search';
 import {XIcon} from '../icons/XIcon';
 import {Text} from './Text';
 
@@ -47,7 +47,7 @@ export const SearchInput = ({
       editable={editable}
     />
 
-    {onClose !== undefined && (
+    {onClose && (
       <TouchableWithoutFeedback containerStyle={styles.close} onPress={onClose}>
         <XIcon size={24} color={Colors.Grey} />
       </TouchableWithoutFeedback>
@@ -88,8 +88,8 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    height: 50,
-    borderRadius: 25,
+    height: 40,
+    borderRadius: 20,
     paddingLeft: 54,
     paddingRight: 24,
     backgroundColor: Colors.White,
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
 
   input: {
     flex: 1,
-    height: 50,
+    height: 40,
     borderRadius: 25,
     paddingRight: 24,
     fontSize: 16,
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
   icon: {
     position: 'absolute',
     left: 20,
-    top: 14,
+    // top: 14,
   },
 
   close: {
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
-    height: 50,
+    height: 40,
     zIndex: 10,
   },
 });

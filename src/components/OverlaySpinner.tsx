@@ -13,7 +13,7 @@ export const OverlaySpinner = () =>
         <BlurView
           blurType="light"
           blurAmount={5}
-          reducedTransparencyFallbackColor={Colors.Primary.White}
+          reducedTransparencyFallbackColor={Colors.White}
           style={styles.blur}
         />
         <View style={styles.container}>
@@ -23,7 +23,7 @@ export const OverlaySpinner = () =>
               autoPlay
               loop
               style={styles.spinnerSize}
-              colorFilters={[{keypath: '预合成 1', color: Colors.Primary.Navy}]}
+              colorFilters={[{keypath: '预合成 1', color: Colors.Primary}]}
             />
           </View>
         </View>

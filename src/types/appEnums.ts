@@ -3,7 +3,7 @@ export enum SpinnerStyle {
   Fluid = 'fluid',
 }
 
-export enum ArticleCategories {
+export enum ArticleCategoryType {
   Business = 'business',
   Entertainment = 'entertainment',
   General = 'general',
