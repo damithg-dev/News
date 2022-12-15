@@ -18,19 +18,24 @@ export const toArticle = (data: ArticleRow) => {
   return _article;
 };
 
-const getLatestArticles = async () => {
+const getLatestArticles = async (countryCode: string) => {
   try {
-    const result = await request<Response>('top-headlines?country=us');
+    const result = await request<Response>(
+      `top-headlines?country=${countryCode}`,
+    );
     return result.articles.map(r => toArticle(r));
   } catch (e) {
     console.log('getLatestArticles', e);
   }
 };
 
-const getCategorizedArticles = async (category: ArticleCategoryType) => {
+const getCategorizedArticles = async (
+  category: ArticleCategoryType,
+  countryCode: string,
+) => {
   try {
     const result = await request<Response>(
-      `top-headlines?country=us&category=${category}`,
+      `top-headlines?country=${countryCode}&category=${category}`,
     );
     return result.articles.map(r => toArticle(r));
   } catch (e) {
@@ -38,12 +43,14 @@ const getCategorizedArticles = async (category: ArticleCategoryType) => {
   }
 };
 
-const getSearchArticles = async (searchString: string) => {
+const getSearchArticles = async (searchString: string, sortBy: string) => {
   if (searchString.length < 3) {
     return [];
   }
   try {
-    const result = await request<Response>(`everything?q=${searchString}`);
+    const result = await request<Response>(
+      `everything?q=${searchString}&sortBy=${sortBy}`,
+    );
     return result.articles.map(r => toArticle(r));
   } catch (e) {
     console.log('getSearchArticles', e);

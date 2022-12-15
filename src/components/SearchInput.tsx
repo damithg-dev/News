@@ -23,6 +23,9 @@ interface SearchInputProps {
   autoFocus?: boolean;
   style?: ViewStyle;
   editable?: boolean;
+  onFocus?: () => void;
+  onBlur?: () => void;
+  isFocus?: boolean;
 }
 
 export const SearchInput = ({
@@ -33,6 +36,9 @@ export const SearchInput = ({
   editable = true,
   onChange,
   onClose,
+  onFocus,
+  onBlur,
+  isFocus,
 }: SearchInputProps) => (
   <View style={[styles.container, style]}>
     <TextInput
@@ -45,14 +51,15 @@ export const SearchInput = ({
       }}
       autoFocus={autoFocus}
       editable={editable}
+      onFocus={onFocus}
+      onBlur={onBlur}
     />
 
-    {onClose && (
+    {isFocus && (
       <TouchableWithoutFeedback containerStyle={styles.close} onPress={onClose}>
         <XIcon size={24} color={Colors.Grey} />
       </TouchableWithoutFeedback>
     )}
-
     <View style={styles.icon}>
       <SearchIcon size={22} color={Colors.Grey} />
     </View>

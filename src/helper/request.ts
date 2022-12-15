@@ -1,5 +1,5 @@
 // https://newsapi.org/docs/authentication
-const key = '9621948bf0294667b538835e1c6f2360';
+const key = 'bb9c23914b114fc0bd0d72aeef526b4e';
 const baseUrl = 'https://newsapi.org/v2/';
 
 export function request<TResponse>(

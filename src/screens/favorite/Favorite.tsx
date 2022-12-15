@@ -9,6 +9,7 @@ import {RootStackParamList} from '../../navigator/Root';
 import {useBMArticle} from '../../realm/Service';
 import {FlashList} from '@shopify/flash-list';
 import {ArticleCard} from '../../components/ArticleCard';
+import {Header} from '../../components/Header';
 
 type NavigationProps = CompositeNavigationProp<
   StackNavigationProp<TabNavigatorParamList, 'Favorite'>,
@@ -30,6 +31,7 @@ export const Favorite = () => {
 
   return (
     <View style={styles.root}>
+      <Header title={'Bookmarked News'} backgroundColor={'white'} />
       <FlashList
         scrollEnabled={false}
         data={bookmarkArticle}
@@ -53,6 +55,6 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.White,
   },
   list: {
-    paddingTop: 50,
+    paddingTop: 20,
   },
 });

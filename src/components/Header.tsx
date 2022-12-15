@@ -6,7 +6,7 @@ import {Styles} from '../Styles';
 import {Colors} from '../Colors';
 
 interface HeaderProps {
-  title: string | {title: string; subTitle: string};
+  title: string;
   leftIcon?: JSX.Element;
   onPressLeft?: () => void;
   rightIcon?: JSX.Element;
@@ -80,7 +80,9 @@ export const Header = ({
       <View style={styles.header}>
         {renderLeftIcon()}
         <View style={styles.content}>
-          <Text>{title}</Text>
+          <Text style={styles.title} fontFamily={'NWB'} size={24}>
+            {title}
+          </Text>
         </View>
         {RenderRightIcon()}
       </View>
@@ -119,5 +121,9 @@ const styles = StyleSheet.create({
 
   placeHolderIcon: {
     width: 24,
+  },
+
+  title: {
+    textAlign: 'center',
   },
 });

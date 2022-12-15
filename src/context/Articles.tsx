@@ -1,6 +1,5 @@
 import React, {
   createContext,
-  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -8,17 +7,16 @@ import React, {
 } from 'react';
 import {ArticleService} from '../service/ArticleService';
 import {ArticleCategoryType} from '../types/appEnums';
+import {useGeneral} from './General';
 
 type State = {
   loading: boolean;
   articles: Article[];
-  getArticlesByCategory: (category: ArticleCategoryType) => Promise<Article[]>;
 };
 
 export const ArticleContext = createContext<State>({
   loading: true,
   articles: [],
-  getArticlesByCategory: async () => [],
 });
 
 interface Props {
@@ -29,18 +27,7 @@ export const ArticlesProvider = ({children}: Props) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [articles, setArticles] = useState<Article[]>([]);
 
-  const getArticlesByCategory = useCallback(
-    async (category: ArticleCategoryType) => {
-      const _article = await ArticleService.getCategorizedArticles(category);
-      return _article ?? [];
-    },
-    [],
-  );
-
-  const values = useMemo(
-    () => ({articles, loading, getArticlesByCategory}),
-    [articles, loading, getArticlesByCategory],
-  );
+  const values = useMemo(() => ({articles, loading}), [articles, loading]);
 
   return (
     <ArticleContext.Provider value={values}>{children}</ArticleContext.Provider>
@@ -58,16 +45,19 @@ export const useArticle = () => {
 export const useArticlesByCategory = (category: ArticleCategoryType) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [articles, setArticles] = useState<Article[]>([]);
+  const {countryCode} = useGeneral();
 
   useEffect(() => {
     (async () => {
       setLoading(true);
-      ArticleService.getCategorizedArticles(category).then(_article => {
-        setArticles(_article ?? []);
-        setLoading(false);
-      });
+      ArticleService.getCategorizedArticles(category, countryCode).then(
+        _article => {
+          setArticles(_article ?? []);
+          setLoading(false);
+        },
+      );
     })();
-  }, [category]);
+  }, [category, countryCode]);
 
   return {
     loading,
@@ -78,16 +68,17 @@ export const useArticlesByCategory = (category: ArticleCategoryType) => {
 export const useLatestArticles = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [articles, setArticles] = useState<Article[]>([]);
+  const {countryCode} = useGeneral();
 
   useEffect(() => {
     (async () => {
       setLoading(true);
-      ArticleService.getLatestArticles().then(_article => {
+      ArticleService.getLatestArticles(countryCode).then(_article => {
         setArticles(_article ?? []);
         setLoading(false);
       });
     })();
-  }, []);
+  }, [countryCode]);
 
   return {
     loading,
@@ -95,19 +86,22 @@ export const useLatestArticles = () => {
   };
 };
 
-export const useArticlesBySearch = (search: string) => {
+export const useArticlesBySearch = (
+  search: string,
+  sortBy: 'relevancy' | 'popularity' | 'publishedAt',
+) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [articles, setArticles] = useState<Article[]>([]);
 
   useEffect(() => {
     (async () => {
       setLoading(true);
-      ArticleService.getSearchArticles(search).then(_article => {
+      ArticleService.getSearchArticles(search, sortBy).then(_article => {
         setArticles(_article ?? []);
         setLoading(false);
       });
     })();
-  }, [search]);
+  }, [search, sortBy]);
 
   return {
     loading,

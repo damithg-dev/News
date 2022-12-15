@@ -30,7 +30,7 @@ export const TabNavigator = () => {
         component={Favorite}
         options={{
           headerShown: false,
-          tabBarLabel: 'BoolMark',
+          tabBarLabel: 'Bookmark',
           tabBarIcon: BookmarkIcon,
         }}
       />

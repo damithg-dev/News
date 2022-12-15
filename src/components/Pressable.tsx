@@ -7,7 +7,7 @@ import {
   StyleProp,
 } from 'react-native';
 
-interface PressableProps extends RnPressableProps {
+export interface PressableProps extends RnPressableProps {
   containerStyle?: StyleProp<ViewStyle>;
   activeOpacity?: number;
 }

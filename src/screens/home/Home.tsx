@@ -19,7 +19,9 @@ import {CategoryCarousel} from '../../components/CategoryList';
 import {Pressable} from '../../components/Pressable';
 import {ArticleCategoryType, SpinnerStyle} from '../../types/appEnums';
 import {Spinner} from '../../components/Spinner';
-import {BellIcon} from '../../icons/Bell';
+import {GearIcon} from '../../icons/Gear';
+import {FilterIcon} from '../../icons/Filter';
+import {BottomModal} from '../../components/BottomModal';
 
 type NavigationProps = CompositeNavigationProp<
   StackNavigationProp<TabNavigatorParamList, 'Home'>,
@@ -33,10 +35,14 @@ export const Home = () => {
   );
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [searchString, setSearchString] = useState('');
+  const [sortOrder, setSortOrder] = useState<
+    'relevancy' | 'popularity' | 'publishedAt'
+  >('relevancy');
+  const [showSortModal, setShowSortModal] = useState(false);
 
   const {articles, loading} = useArticlesByCategory(selectedArticle);
   const {articles: searchArticle, loading: loadingSearchArticle} =
-    useArticlesBySearch(searchString);
+    useArticlesBySearch(searchString, sortOrder);
 
   const {top} = useSafeAreaInsets();
 
@@ -61,7 +67,6 @@ export const Home = () => {
         <SearchInput
           value={searchString}
           onChange={value => {
-            setIsSearchActive(true);
             setSearchString(value);
           }}
           onClose={() => {
@@ -69,12 +74,27 @@ export const Home = () => {
             setSearchString('');
             setIsSearchActive(false);
           }}
+          onFocus={() => {
+            setIsSearchActive(true);
+          }}
+          isFocus={isSearchActive}
         />
-        {!isSearchActive && (
-          <Pressable containerStyle={styles.iconContainer}>
-            <BellIcon size={25} color={Colors.White} />
-          </Pressable>
-        )}
+        <Pressable
+          onPress={() => {
+            if (isSearchActive) {
+              Keyboard.dismiss();
+              setShowSortModal(true);
+            } else {
+              navigate('Settings');
+            }
+          }}
+          containerStyle={styles.iconContainer}>
+          {isSearchActive ? (
+            <FilterIcon size={25} color={Colors.White} />
+          ) : (
+            <GearIcon size={25} color={Colors.White} />
+          )}
+        </Pressable>
       </View>
       <ScrollView>
         <>
@@ -82,7 +102,7 @@ export const Home = () => {
             <>
               <LatestArticleCarousel
                 onPressArticle={item => navigateToArticle(item)}
-                onPressSeeMore={() => {}}
+                onPressSeeMore={() => navigate('Latest')}
               />
               <CategoryCarousel
                 onPress={category => {
@@ -102,6 +122,7 @@ export const Home = () => {
               scrollEnabled={false}
               data={isSearchActive ? searchArticle : articles}
               contentContainerStyle={styles.list}
+              estimatedItemSize={100}
               renderItem={({item}) => {
                 return (
                   <ArticleCard
@@ -114,6 +135,12 @@ export const Home = () => {
           )}
         </>
       </ScrollView>
+      <BottomModal
+        show={showSortModal}
+        onClose={() => setShowSortModal(false)}
+        selectedSort={sortOrder}
+        onSelectedSort={t => setSortOrder(t)}
+      />
     </View>
   );
 };
